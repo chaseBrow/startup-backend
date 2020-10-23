@@ -1,0 +1,26 @@
+{
+  "cloud/app.js": {
+    "mt": "Fri Oct 23 2020 19:35:29 GMT-0400 (Eastern Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/chasebrown/Documents/GitHub/startup-backend/cloud/app.js"
+  },
+  "cloud/main.js": {
+    "mt": "Fri Oct 23 2020 19:35:46 GMT-0400 (Eastern Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/chasebrown/Documents/GitHub/startup-backend/cloud/main.js"
+  },
+  "cloud/package-lock.json": {
+    "mt": "Fri Oct 23 2020 19:35:42 GMT-0400 (Eastern Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/chasebrown/Documents/GitHub/startup-backend/cloud/package-lock.json"
+  },
+  "cloud/package.json": {
+    "mt": "Fri Oct 23 2020 19:35:43 GMT-0400 (Eastern Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/chasebrown/Documents/GitHub/startup-backend/cloud/package.json"
+  }
+}
