@@ -22,3 +22,4 @@ __nc_statics__startup.json
 *.njsproj
 *.sln
 *.sw?
+__nc_ccode__startup.json
