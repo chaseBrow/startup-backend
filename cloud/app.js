@@ -18,8 +18,6 @@ app.get("/user/create", async (req, res) => {
         } catch (err) {
             res.json({sessionId: null, error: "Error: " + err.code + " " + err.message});
         }
-
-
         res.json({ sessionId: "test", error: null})
     }
 });
