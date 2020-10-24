@@ -12,7 +12,7 @@ Then run the following command while being located in /startup.
 
 ### GET '/test'  
 param: {}  
-response: {param}
+response: {param}  
 *This is a test call where you can send any params and it will always return all of the params just as you sent them.*
 
 
