@@ -12,8 +12,7 @@ Then run the following command while being located in /startup.
 
 ### GET '/user/create'  
 param: {String email, String password}  
-response: {String sessionId, String msg}  
-*msg will respond with success or failure message*  
+response: {String sessionId, String error}  
 
 
 ### GET '/user/reset' param: {email}
