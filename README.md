@@ -10,6 +10,8 @@ Then run the following command while being located in /startup.
   
 ## **HTTP CALLS**
 
+Endpoint URL: `https://startup-5676.nodechef.com/`  
+
 ### GET '/test'  
 param: {}  
 response: {param}  
