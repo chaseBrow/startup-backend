@@ -18,8 +18,8 @@ response: {param}
 *This is a test call where you can send any params and it will always return all of the params just as you sent them.*
 
 
-### GET '/user/create'  
-param: {String email, String password}  
+### POST '/user/create'  
+param: {String email, String password, bool type (True = Applicant, False = Employer)}  
 response: {String sessionId, String error}  
 
 
