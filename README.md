@@ -27,3 +27,13 @@ response: {String sessionId, String error}
 param: {String email}  
 response: {String msg, String error}  
 *msg will say if the email has been sent and confirm the email address*
+
+
+### POST '/user/create'  
+param: {String email, String password, bool type (True = Applicant, False = Employer)}  
+response: {String sessionId, String error} 
+
+
+### POST '/user/create'  
+param: {String email, String password, bool type (True = Applicant, False = Employer)}  
+response: {String sessionId, String error} 
