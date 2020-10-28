@@ -17,28 +17,50 @@ param: {}
 response: {param}  
 *This is a test call where you can send any params and it will always return all of the params just as you sent them.*
 
+### USER  
+### GET 'user'
+param: {String userId}
+response: {}
 
 ### POST '/user/create'  
 param: {String email, String password, bool type (True = Applicant, False = Employer)}  
 response: {String sessionId, String error}  
-
-
+  
 ### GET '/user/reset'  
 param: {String email}  
 response: {String msg, String error}  
 *msg will say if the email has been sent and confirm the email address*
-
-
-### POST '/user/create'  
-param: {String email, String password, bool type (True = Applicant, False = Employer)}  
-response: {String sessionId, String error} 
-
-
+  
 ### POST '/user/create'  
 param: {String email, String password, bool type (True = Applicant, False = Employer)}  
 response: {String sessionId, String error} 
   
+### POST '/user/update/info'  
+param: {String firstName, String , bool type (True = Applicant, False = Employer)}  
+response: {String sessionId, String error} 
   
+### POST '/user/update/education'  
+param: {String email, String password, bool type (True = Applicant, False = Employer)}  
+response: {String sessionId, String error}  
+  
+### GET '/user/update/experience'  
+param: {String email}  
+response: {String msg, String error}  
+*msg will say if the email has been sent and confirm the email address*
+  
+### POST '/user/update/listings'  
+param: {String email, String password, bool type (True = Applicant, False = Employer)}  
+response: {String sessionId, String error} 
+
+
+
+### POST '/listings'  
+param: {String email, String password, bool type (True = Applicant, False = Employer)}  
+response: {String sessionId, String error} 
+
+
+
+
 ### POST '/user/create'  
 param: {String email, String password, bool type (True = Applicant, False = Employer)}  
 response: {String sessionId, String error}  
