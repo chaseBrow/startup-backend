@@ -25,6 +25,7 @@ app.get("/user/create", async (req, res) => {
 
 app.get("/user/reset", async (req, res) => {
     try {
+        console.log("reseting password for email: " + req.query.email);
         await Parse.User.requestPasswordReset(req.query.email);
     } catch (err) {
         res.json({msg: "There is no matching email on record.", error: "Error: " + err.code + " " + err.message});
