@@ -18,14 +18,18 @@ app.get("/user/create", async (req, res) => {
         } catch (err) {
             res.json({sessionId: null, error: "Error: " + err.code + " " + err.message});
         }
-        res.json({ sessionId: "test", error: null});
+        res.json({ sessionId: "912jIdm1", error: null});
     }
 });
 
 
 app.get("/user/reset", async (req, res) => {
     try {
-        await Parse.User.requestPasswordReset(req.query.email);
+        console.log("reseting password for email: " + req.query.email);
+        Parse.User.requestPasswordReset(req.query.email)
+        .then(() => {}).catch((err) => {
+            res.json({msg: "There is no matching email on record.", error: "Error: " + err.code + " " + err.message});
+        });
     } catch (err) {
         res.json({msg: "There is no matching email on record.", error: "Error: " + err.code + " " + err.message});
     }
