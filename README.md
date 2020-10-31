@@ -7,20 +7,34 @@ Then Login to your Nodechef account.
   
 Then run the following command while being located in /startup.  
 `nc deploy --ccode -i startup`
-  
-## **HTTP CALLS**
 
-Endpoint URL: `https://startup-5676.nodechef.com/`  
+# **Data Structure**
+  
+## Class User
+### Relationships  
+
+
+## Class Experience
+
+## Class Education
+
+## Class Listing
+
+
+
+# **HTTP CALLS**
+
+## Endpoint URL: `https://startup-5676.nodechef.com/`  
 
 ### GET '/test'  
 param: {}  
 response: {param}  
 *This is a test call where you can send any params and it will always return all of the params just as you sent them.*
 
-### USER  
+## USER  
 ### GET 'user'
-param: {String userId}
-response: {}
+param: {String sessionId}
+response: {String firstNameExperience[] experiences, }
 
 ### POST '/user/create'  
 param: {String email, String password, bool type (True = Applicant, False = Employer)}  
@@ -52,7 +66,7 @@ response: {String msg, String error}
 param: {String email, String password, bool type (True = Applicant, False = Employer)}  
 response: {String sessionId, String error} 
 
-
+## LISTINGS  
 
 ### POST '/listings'  
 param: {String email, String password, bool type (True = Applicant, False = Employer)}  
