@@ -10,17 +10,42 @@ Then run the following command while being located in /startup.
 
 # **Data Structure**
   
-## Class User
+## Class **User**
+  
 ### Relationships  
+  
+If a user is an applicant, they are expected to have atleast 1 Experience and 1 Education.  
+If a user is an Employer, they do not need Experience, Education, or a Listing.  
+  
+1 --> 0..* Experience  
+1 --> 0..* Education  
+1 --> 0..* Listings  
+COMING SOON...  possibly... jk... too much work... diminishing returns...  
+1 --> 0..*  Company  
+  
+### Parameters 
+Key: (* = required, # = unique identifier)  
+  
+*`String firstName`  
+*`String lastName`  
+*#`String email`  
+*`String password`  
+*`bool type` (True = Applicant, False = Employer)  
+`String city` (both city and state can later be replaced by a geopoint)  
+`String state` (this will allow us to search by proximity if we have time)   
+***I Think it would be cool to call this a greeting instead of a bio.  I feel like students often have a hard time writing about themselves, however, every student can think of a way to introduce themselves as if they were meeting IRL.***  
+`String greeting`   
+`File pic` (profile pictures would be a cool feature to add, but not neccessary)  
+`String linkedIn`  
+`String github`  
 
+## Class **Experience**
 
-## Class Experience
+## Class **Education**
 
-## Class Education
+## Class **Listing**
 
-## Class Listing
-
-
+## Class **Company** Coming soon to an application near you...  
 
 # **HTTP CALLS**
 
