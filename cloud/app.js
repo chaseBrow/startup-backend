@@ -195,3 +195,43 @@ app.put("/user/update/education", async (req, res) => {
         res.json({error: err});
     });
 });
+
+app.put("/user/update/experience", async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+
+    const Exp = Parse.Object.extend("Experience");
+    const queryExp = new Parse.Query(Exp);
+    queryExp.equalTo("owner", user);
+    queryExp.equalTo("name", req.query.name);
+    let temp = new Date(req.query.start);
+    queryExp.equalTo("start", temp);
+    let exp = await queryExp.first({useMasterKey: true});
+    if(req.query.end) {
+        temp = new Date(req.query.end);
+        exp.set("end", temp);
+    }
+    if(req.query.present) {
+        if(req.query.present == "true") exp.set("present", true);
+        else exp.set("present", false);
+    }
+    if(req.query.project) {
+        if(req.query.project == "true") exp.set("project", true);
+        else exp.set("project", false);
+    }
+    if(req.query.title) {
+        exp.set("title", req.query.title);
+    }
+    if(req.query.description) {
+        exp.set("description", req.query.description);
+    }
+    if(req.query.tags) {
+        exp.set("tags", req.query.tags);
+    }
+    exp.save(null, {useMasterKey: true}).then(() => {
+        res.json({error: null});
+    }).catch((err)=> {
+        res.json({error: err});
+    });
+});
