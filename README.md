@@ -68,7 +68,7 @@ Key: (* = required, # = unique identifier)
 *`String start` (this is an start date, please pass it to me like `2020-10-30`)  
 `String end` (this is an end date, please pass it to me like `2020-10-30`)  
 `bool present` (True = present, False = ended)
-`bool project` (True = present, False = ended)
+`bool project` (True = project, False = ended)
 `String title`  
 *`String description`  
 `String tags[]`  
@@ -135,17 +135,17 @@ response: {String sessionId, String error}
   
 ### POST '/user/onboard/info'  
 This is the second half of the user creation process.  None of the parameters are required, whatever params are not passed will be set to NULL.  
-param: {String location, String greeting, String linkedIn, String github, String tags[]}  
+param: {String sessionId, String location, String greeting, String linkedIn, String github, String tags[]}  
 response: {String error}  
 
 ### POST '/user/onboard/education'  
 This is the second half of the user creation process.  If a user has multiple educations, this call should be made multiple times.  
-param: {*String college, *#String start, String end, bool present (True = present, False = ended), *#String major, String minor, double gpa, String tags[]}  
+param: {String sessionId, *String college, *String start, String end, bool present (True = present, False = ended), *String major, String minor, double gpa, String tags[]}  
 response: {String error}  
 
 ### POST '/user/onboard/experience'  
 This is the second half of the user creation process.  If a user has multiple experiences, this call should be made multiple times.  
-param: {String location, String greeting, String linkedIn, String github, String tags[]}  
+param: {String sessionId, *String name, *String start, String end, bool present, bool project, String title, *String description, String tags[]}  
 response: {String error}  
   
 ### GET '/user/reset'  
@@ -161,13 +161,12 @@ response: {String error}
   
 ### PUT '/user/update/education'  
 This call will update the user education
-param: {String sessionId, String email, String password, bool type (True = Applicant, False = Employer)}  
-response: {String sessionId, String error}  
+param: {String sessionId, *String college, *String start, String end, bool present (True = present, False = ended), *String major, String minor, double gpa, String tags[]}  
+response: {String error} 
   
 ### PUT '/user/update/experience'  
-param: {String sessionId, String email}  
-response: {String msg, String error}  
-*msg will say if the email has been sent and confirm the email address*
+param: {String sessionId, *String name, *String start, String end, bool present, bool project, String title, *String description, String tags[]}  
+response: {String error} 
   
 ### PUT '/user/update/listings'  
 param: {String email, String password, bool type (True = Applicant, False = Employer)}  
