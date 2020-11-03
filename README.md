@@ -156,7 +156,7 @@ response: {String msg, String error}
   
 ### PUT '/user/update/info'  
 This call will update the users info (everything besides experiences and education)  
-param: {*String sessionId, String firstName, String lastName, String email, String location, String greeting}  
+param: {*String sessionId, String firstName, String lastName, String email, String location, String greeting, String linkedIn, String github, String tags[]}  
 response: {String error}  
   
 ### PUT '/user/update/education'  

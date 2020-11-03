@@ -108,7 +108,6 @@ app.post("/user/onboard/experience", async (req, res) => {
     });
 });
 
-
 app.get("/user/reset", async (req, res) => {
     try {
         console.log("reseting password for email: " + req.query.email);
@@ -122,6 +121,38 @@ app.get("/user/reset", async (req, res) => {
     res.json({msg: "An email has been sent successfully to " + req.query.email, error: null})
 });
 
-
-
-console.log("Hello world") 
+app.put("/user/update/info", async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+    if(req.query.location) {
+        user.set("location", req.query.location);
+    }
+    if(req.query.email) {
+        user.set("email", req.query.email);
+        user.set("username", req.query.email);
+    }
+    if(req.query.firstName) {
+        user.set("firstName", req.query.firstName);
+    }
+    if(req.query.lastName) {
+        user.set("lastName", req.query.lastName);
+    }
+    if(req.query.greeting) {
+        user.set("greeting", req.query.greeting);
+    }
+    if(req.query.linkedIn) {
+        user.set("linkedIn", req.query.linkedIn);
+    }
+    if(req.query.github) {
+        user.set("github", req.query.github);
+    }
+    if(req.query.tags) {
+        user.set("tags", req.query.tags);
+    }
+    user.save(null, {useMasterKey: true}).then(() => {
+        res.json({error: null});
+    }).catch((err)=> {
+        res.json({error: err});
+    });
+});
