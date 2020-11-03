@@ -8,17 +8,23 @@ app.get("/user/create", async (req, res) => {
     if (!req.query.email || !req.query.password) {
         res.json({ sessionId: null, error: "Please provide an email and password"});
     }
+    else if (!req.query.firstName || !req.query.lastName) {
+        res.json({ sessionId: null, error: "Please provide a first and last name"});
+    }
     else {
         let newUser = new Parse.User();
         newUser.set("username", req.query.email);
         newUser.set("password", req.query.password);
         newUser.set("email", req.query.email);
-        try {
-            await newUser.signUp();
-        } catch (err) {
+        newUser.set("firstName", req.query.firstName);
+        newUser.set("lastName", req.query.lastName);
+        if(req.query.type == "True") newUser.set("type", true);
+        else newUser.set("type", false);
+        await newUser.signUp().then((user) => {
+            res.json({sessionId: user.id, error: null});
+        }).catch( (err) => {
             res.json({sessionId: null, error: "Error: " + err.code + " " + err.message});
-        }
-        res.json({ sessionId: "912jIdm1", error: null});
+        });
     }
 });
 

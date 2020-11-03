@@ -39,7 +39,7 @@ COMING SOON...  possibly... jk... too much work... diminishing returns...
 ### Parameters 
 Key: (* = required, # = unique identifier)  
   
-#`String objectId` (this is automatically assigned at creation)
+#`String objectId` (this is automatically assigned at creation)  
 *`String firstName`  
 *`String lastName`  
 *#`String email`  
@@ -63,12 +63,12 @@ Key: (* = required, # = unique identifier)
 ### Parameters 
 Key: (* = required, # = unique identifier)  
   
-#`String objectId` (this is automatically assigned at creation) 
+#`String objectId` (this is automatically assigned at creation)  
 *`String name` (this is the name of the company or project)  
 *`String start` (this is an start date, please pass it to me like `2020-10-30`)  
 `String end` (this is an end date, please pass it to me like `2020-10-30`)  
-`bool present` (True = present, False = ended)
-`bool project` (True = project, False = ended)
+`bool present` (True = present, False = ended)  
+`bool project` (True = project, False = ended)  
 `String title`  
 *`String description`  
 `String tags[]`  
@@ -82,13 +82,13 @@ Key: (* = required, # = unique identifier)
 ### Parameters 
 Key: (* = required, # = unique identifier)  
   
-#`String objectId` (this is automatically assigned at creation)
+#`String objectId` (this is automatically assigned at creation)  
 *`String college` (this is the name of the college/university)  
 *`String start` (this is an start date, please pass it to me like `2020-10-30`)  
 `String end` (this is an end date, please pass it to me like `2020-10-30`)  
-`bool present` (True = present, False = ended)
+`bool present` (True = present, False = ended)  
 *`String major`  
-`String minor` 
+`String minor`  
 `double gpa`  
 `String tags[]`  
 
@@ -101,15 +101,15 @@ Key: (* = required, # = unique identifier)
 ### Parameters 
 Key: (* = required, # = unique identifier)  
   
-#`String objectId` (this is automatically assigned at creation)
+#`String objectId` (this is automatically assigned at creation)  
 *`String name` (this is the name of the company or project)  
 `String start` (this is an start date, please pass it to me like `2020-10-30`)  
 `String location` (this is the location of the opportunity, please pass it to me like `Mishawaka, IN`)  
-`String type` (give them the options as listed above in the ENV_VAR)
-`bool paid` (True = paid, False = ended)
+`String type` (give them the options as listed above in the ENV_VAR)  
+`bool paid` (True = paid, False = ended)  
 *`String title`  
 `String description`  
-`String tags[]` 
+`String tags[]`  
 
 ## Class **Company** Coming soon to an application near you...  
 
@@ -152,40 +152,41 @@ response: {String error}
 This call will reset the password of a user.  
 param: {String email}  
 response: {String msg, String error}  
-*msg will say if the email has been sent and confirm the email address*
+*msg will say if the email has been sent and confirm the email address*  
   
 ### PUT '/user/update/info'  
-This call will update the users info (everything besides experiences and education)
+This call will update the users info (everything besides experiences and education)  
 param: {*String sessionId, String firstName, String lastName, String email, String location, String greeting}  
-response: {String error} 
+response: {String error}  
   
 ### PUT '/user/update/education'  
-This call will update the user's educations, It is important to note... A user cannot change the name/startDate of a current education connected to their profile... If they want to change these values they will need to delete the current education and create a new one.  I still need you to pass the current name/startDate so I can make sure I am editing the correct education.
+This call will update the user's educations, It is important to note... A user cannot change the name/startDate of a current education connected to their profile... If they want to change these values they will need to delete the current education and create a new one.  I still need you to pass the current name/startDate so I can make sure I am editing the correct education.  
 param: {*String sessionId, *String college, *String start, String end, bool present (True = present, False = ended), *String major, String minor, double gpa, String tags[]}  
-response: {String error} 
+response: {String error}  
   
 ### PUT '/user/update/experience'  
-This call will update the user's experiences, It is important to note... A user cannot change the name/startDate of a current experience connected to their profile... If they want to change these values they will need to delete the current experience and create a new one.  I still need you to pass the current name/startDate so I can make sure I am editing the correct experience.
+This call will update the user's experiences, It is important to note... A user cannot change the name/startDate of a current experience connected to their profile... If they want to change these values they will need to delete the current experience and create a new one.  I still need you to pass the current name/startDate so I can make sure I am editing the correct experience.  
 param: {*String sessionId, *String name, *String start, String end, bool present, bool project, String title, String description, String tags[]}  
-response: {String error} 
+response: {String error}  
   
 ### PUT '/user/update/listings'  
 This call will update a listing connected to a users, It is important to note... A user cannot change the name/title of a current listing connected to their user... If they want to change these values they will need to delete the current listing and create a new one.  I still need you to pass the current name/title so I can make sure I am editing the correct listing.  
 param: {*String sessionId, *String name, String start, String location, String type, bool paid, *String title, String description, String tags[]}  
-response: {String error} 
+response: {String error}  
 
 ## LISTINGS  
 
 ### GET '/listings'  
-the first three params are filters.  If you pass multiple parameters it will use all of them to filter.  The last param is to sort the array, please see the ENV_VAR above for possible sorting options.  
+This call will return an array of listings, the first three params are filters.  If you pass multiple parameters it will use all of them to filter.  The last param is to sort the array, please see the ENV_VAR above for possible sorting options.  
 param: {String name, String type, bool paid, String sortBy}    
-response: {String sessionId, String error} 
+response: {Listing[] listings, String error}  
   
 ### POST '/listings/create'  
-param: {String email, String password, bool type (True = Applicant, False = Employer)}  
-response: {String sessionId, String error}  
+This call will create a new listing connected to the users account.  
+param: {*String sessionId, *String name, String start, String location, String type, bool paid, *String title, String description, String tags[]}  
+response: {String error}   
   
 ### PUT '/listings/update'  
-param: {String email}  
-response: {String msg, String error}  
-*msg will say if the email has been sent and confirm the email address*
+This call will update a listing connected to a users, It is important to note... A user cannot change the name/title of a current listing connected to their user... If they want to change these values they will need to delete the current listing and create a new one.  I still need you to pass the current name/title so I can make sure I am editing the correct listing.  
+param: {*String sessionId, *String name, String start, String location, String type, bool paid, *String title, String description, String tags[]}  
+response: {String error}  
