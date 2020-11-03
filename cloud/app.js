@@ -238,7 +238,7 @@ app.put("/user/update/experience", async (req, res) => {
 
 app.get("/listings", async (req, res) => {
     const List = Parse.Object.extend("Listing");
-    const queryList = Parse.Query(List);
+    const queryList = new Parse.Query(List);
     console.log("test1");
     if(req.query.name) {
         queryList.startsWith("name", req.query.name);
@@ -272,22 +272,60 @@ app.post("/listings/create", async (req, res) => {
     query.equalTo("objectId", req.query.sessionId);
     let user = await query.first({useMasterKey: true});
 
-    console.log("test1");
-
     newList.set("name", req.query.name);
     let temp = new Date(req.query.start);
     newList.set("start", temp);
     newList.set("location", req.query.location);
     newList.set("type", req.query.type);
-    console.log("test2");
     if(req.query.paid == "true") newList.set("paid", true);
     else newList.set("paid", false);
     newList.set("title", req.query.title);
     newList.set("description", req.query.description);
     newList.set("tags", req.query.tags);
     newList.set("owner", user);
-    console.log("test3");
     newList.save(null, {useMasterKey: true}).then(() => {
+        res.json({error: null});
+    }).catch((err)=> {
+        res.json({error: err});
+    });
+});
+
+app.put("/listings/update", async (req, res) => {
+    const List = Parse.Object.extend("Listing");
+    const queryList = new Parse.Query(List);
+
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+
+    queryList.equalTo("owner", user);
+    queryList.equalTo("name", req.query.name);
+    queryList.equalTo("title", req.query.title);
+
+    let list = await queryList.first();
+
+    if(req.query.start) {
+        let temp = new Date(req.query.start);
+        list.set("start", temp);
+    }
+    if(req.query.location) {
+        list.set("location", req.query.location);
+    }
+    if(req.query.type) {
+        list.set("type", req.query.type);
+    }
+    if(req.query.paid) {
+        if(req.query.paid == "true") list.set("paid", true);
+        else list.set("paid", false);
+    }
+    if(req.query.description) {
+        list.set("description", req.query.description);
+    }
+    if(req.query.tags) {
+        list.set("tags", req.query.tags);
+    }
+    
+    list.save(null, {useMasterKey: true}).then(() => {
         res.json({error: null});
     }).catch((err)=> {
         res.json({error: err});
