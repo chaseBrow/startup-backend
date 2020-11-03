@@ -1,3 +1,9 @@
+/*
+Author: Chase Brown
+Desc: This is backend for a IOS application which serves to pair students with startups needing
+technical assistance.
+*/
+
 const Parse = require('parse/node');
 
 app.get("/test", (req, res) => {
