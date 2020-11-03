@@ -156,3 +156,42 @@ app.put("/user/update/info", async (req, res) => {
         res.json({error: err});
     });
 });
+
+app.put("/user/update/education", async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+
+    const Edu = Parse.Object.extend("Education");
+    const queryEdu = new Parse.Query(Edu);
+    queryEdu.equalTo("owner", user);
+    queryEdu.equalTo("college", req.query.college);
+    let temp = new Date(req.query.start);
+    queryEdu.equalTo("start", temp);
+    let edu = await queryEdu.first({useMasterKey: true});
+    if(req.query.end) {
+        temp = new Date(req.query.end);
+        edu.set("end", temp);
+    }
+    if(req.query.present) {
+        if(req.query.present == "true") edu.set("present", true);
+        else edu.set("present", false);
+    }
+    if(req.query.major) {
+        edu.set("major", req.query.major);
+    }
+    if(req.query.minor) {
+        edu.set("minor", req.query.minor);
+    }
+    if(req.query.gpa) {
+        edu.set("gpa", req.query.gpa);
+    }
+    if(req.query.tags) {
+        edu.set("tags", req.query.tags);
+    }
+    edu.save(null, {useMasterKey: true}).then(() => {
+        res.json({error: null});
+    }).catch((err)=> {
+        res.json({error: err});
+    });
+});

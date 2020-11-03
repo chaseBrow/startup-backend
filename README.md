@@ -160,12 +160,12 @@ param: {*String sessionId, String firstName, String lastName, String email, Stri
 response: {String error}  
   
 ### PUT '/user/update/education'  
-This call will update the user's educations, It is important to note... A user cannot change the name/startDate of a current education connected to their profile... If they want to change these values they will need to delete the current education and create a new one.  I still need you to pass the current name/startDate so I can make sure I am editing the correct education.  
+This call will update the user's educations, It is important to note... A user cannot change the college/start of a current education connected to their profile... If they want to change these values they will need to delete the current education and create a new one.  I still need you to pass the current college/start so I can make sure I am editing the correct education.  
 param: {*String sessionId, *String college, *String start, String end, bool present (true = present, false = ended), *String major, String minor, double gpa, String tags[]}  
 response: {String error}  
   
 ### PUT '/user/update/experience'  
-This call will update the user's experiences, It is important to note... A user cannot change the name/startDate of a current experience connected to their profile... If they want to change these values they will need to delete the current experience and create a new one.  I still need you to pass the current name/startDate so I can make sure I am editing the correct experience.  
+This call will update the user's experiences, It is important to note... A user cannot change the name/start of a current experience connected to their profile... If they want to change these values they will need to delete the current experience and create a new one.  I still need you to pass the current name/start so I can make sure I am editing the correct experience.  
 param: {*String sessionId, *String name, *String start, String end, bool present, bool project, String title, String description, String tags[]}  
 response: {String error}  
   
