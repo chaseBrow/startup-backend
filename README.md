@@ -1,4 +1,6 @@
 # startup
+This is the backend for an IOS application which serves to connect software engineers with little experience to startups looking for technical assistance.  
+
 To update the cloud code install the Nodechef CLI.  
 `npm install -g nodechef-cli`
   
@@ -60,11 +62,12 @@ Key: (* = required, # = unique identifier)
 *`String name` (this is the name of the company or project)  
 *`String start` (this is an start date, please pass it to me like `2020-10-30`)  
 `String end` (this is an end date, please pass it to me like `2020-10-30`)  
+`bool present` (True = present, False = ended)
+`bool project` (True = present, False = ended)
 `String title`  
 *`String description`  
 *`String type` (if you could  []) 
-`String linkedIn`  
-`String github`  
+ 
 
 ## Class **Education**
 
