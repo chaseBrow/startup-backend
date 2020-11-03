@@ -169,10 +169,10 @@ This call will update the user's experiences, It is important to note... A user 
 param: {*String sessionId, *String name, *String start, String end, bool present, bool project, String title, String description, String tags[]}  
 response: {String error}  
   
-### PUT '/user/update/listings'  
+<!-- ### PUT '/user/update/listings'  
 This call will update a listing connected to a users, It is important to note... A user cannot change the name/title of a current listing connected to their user... If they want to change these values they will need to delete the current listing and create a new one.  I still need you to pass the current name/title so I can make sure I am editing the correct listing.  
 param: {*String sessionId, *String name, String start, String location, String type, bool paid, *String title, String description, String tags[]}  
-response: {String error}  
+response: {String error}   -->
 
 ## LISTINGS  
 

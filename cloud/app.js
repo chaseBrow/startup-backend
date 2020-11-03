@@ -235,3 +235,61 @@ app.put("/user/update/experience", async (req, res) => {
         res.json({error: err});
     });
 });
+
+app.get("/listings", async (req, res) => {
+    const List = Parse.Object.extend("Listing");
+    const queryList = Parse.Query(List);
+    console.log("test1");
+    if(req.query.name) {
+        queryList.startsWith("name", req.query.name);
+    }
+    if(req.query.type) {
+        queryList.equalTo("type", req.query.type);
+    }
+    if(req.query.paid) {
+        queryList.equalTo("paid", req.query.paid);
+    }
+    if(req.query.sortBy == "Relevant") {
+        //function for collecting tags and comparing here....
+    }
+    else if(req.query.sortBy == "Newest") {
+        queryList.descending("start");
+    }
+    else if(req.query.sortBy == "Oldest") {
+        queryList.ascending("start");
+    }
+    console.log("test2");
+
+    let list = await queryList.find();
+    res.json({listings: list});
+});
+
+app.post("/listings/create", async (req, res) => {
+    const List = Parse.Object.extend("Listing");
+    let newList = new List();
+
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+
+    console.log("test1");
+
+    newList.set("name", req.query.name);
+    let temp = new Date(req.query.start);
+    newList.set("start", temp);
+    newList.set("location", req.query.location);
+    newList.set("type", req.query.type);
+    console.log("test2");
+    if(req.query.paid == "true") newList.set("paid", true);
+    else newList.set("paid", false);
+    newList.set("title", req.query.title);
+    newList.set("description", req.query.description);
+    newList.set("tags", req.query.tags);
+    newList.set("owner", user);
+    console.log("test3");
+    newList.save(null, {useMasterKey: true}).then(() => {
+        res.json({error: null});
+    }).catch((err)=> {
+        res.json({error: err});
+    });
+});
