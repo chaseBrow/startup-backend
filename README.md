@@ -44,7 +44,7 @@ Key: (* = required, # = unique identifier)
 *`String lastName`  
 *#`String email`  
 *`String password`  
-*`bool type` (True = Applicant, False = Employer)  
+*`bool type` (true = Applicant, false = Employer)  
 `String country` (I think having country might be overkill initially)  
 `String location` (both city and state can later be replaced by a geopoint which will allow us to filter for proximity to a certain location, please pass it to me like `Mishawaka, IN`)  
 ***I Think it would be cool to call this a greeting instead of a bio.  I feel like students often have a hard time writing about themselves, however, every student can think of a way to introduce themselves as if they were meeting IRL.***  
@@ -67,8 +67,8 @@ Key: (* = required, # = unique identifier)
 *`String name` (this is the name of the company or project)  
 *`String start` (this is an start date, please pass it to me like `2020-10-30`)  
 `String end` (this is an end date, please pass it to me like `2020-10-30`)  
-`bool present` (True = present, False = ended)  
-`bool project` (True = project, False = ended)  
+`bool present` (true = present, false = ended)  
+`bool project` (true = project, false = ended)  
 `String title`  
 *`String description`  
 `String tags[]`  
@@ -86,7 +86,7 @@ Key: (* = required, # = unique identifier)
 *`String college` (this is the name of the college/university)  
 *`String start` (this is an start date, please pass it to me like `2020-10-30`)  
 `String end` (this is an end date, please pass it to me like `2020-10-30`)  
-`bool present` (True = present, False = ended)  
+`bool present` (true = present, false = ended)  
 *`String major`  
 `String minor`  
 `double gpa`  
@@ -106,7 +106,7 @@ Key: (* = required, # = unique identifier)
 `String start` (this is an start date, please pass it to me like `2020-10-30`)  
 `String location` (this is the location of the opportunity, please pass it to me like `Mishawaka, IN`)  
 `String type` (give them the options as listed above in the ENV_VAR)  
-`bool paid` (True = paid, False = ended)  
+`bool paid` (true = paid, false = ended)  
 *`String title`  
 `String description`  
 `String tags[]`  
@@ -130,7 +130,7 @@ response: {String firstName, String lastName, String email, String location, Str
 
 ### POST '/user/create'  
 This call will create a new user.  All of the params are required and if one is missing it will return an error.  Please collect and send all of the information before making the call.  
-param: {*String firstName, *String lastName, *String email, *String password, *bool type (True = Applicant, False = Employer)}  
+param: {*String firstName, *String lastName, *String email, *String password, *bool type (true = Applicant, false = Employer)}  
 response: {String sessionId, String error}  
   
 ### POST '/user/onboard/info'  
@@ -140,7 +140,7 @@ response: {String error}
 
 ### POST '/user/onboard/education'  
 This is the second half of the user creation process.  If a user has multiple educations, this call should be made multiple times.  
-param: {*String sessionId, *String college, *String start, String end, bool present (True = present, False = ended), *String major, String minor, double gpa, String tags[]}  
+param: {*String sessionId, *String college, *String start, String end, bool present (true = present, false = ended), *String major, String minor, double gpa, String tags[]}  
 response: {String error}  
 
 ### POST '/user/onboard/experience'  
@@ -161,7 +161,7 @@ response: {String error}
   
 ### PUT '/user/update/education'  
 This call will update the user's educations, It is important to note... A user cannot change the name/startDate of a current education connected to their profile... If they want to change these values they will need to delete the current education and create a new one.  I still need you to pass the current name/startDate so I can make sure I am editing the correct education.  
-param: {*String sessionId, *String college, *String start, String end, bool present (True = present, False = ended), *String major, String minor, double gpa, String tags[]}  
+param: {*String sessionId, *String college, *String start, String end, bool present (true = present, false = ended), *String major, String minor, double gpa, String tags[]}  
 response: {String error}  
   
 ### PUT '/user/update/experience'  
