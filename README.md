@@ -103,12 +103,12 @@ Key: (* = required, # = unique identifier)
   
 #`String objectId` (this is automatically assigned at creation)
 *`String name` (this is the name of the company or project)  
-*`String start` (this is an start date, please pass it to me like `2020-10-30`)  
+`String start` (this is an start date, please pass it to me like `2020-10-30`)  
 `String location` (this is the location of the opportunity, please pass it to me like `Mishawaka, IN`)  
 `String type` (give them the options as listed above in the ENV_VAR)
-`bool paid` (True = present, False = ended)
-`String title`  
-*`String description`  
+`bool paid` (True = paid, False = ended)
+*`String title`  
+`String description`  
 `String tags[]` 
 
 ## Class **Company** Coming soon to an application near you...  
@@ -135,17 +135,17 @@ response: {String sessionId, String error}
   
 ### POST '/user/onboard/info'  
 This is the second half of the user creation process.  None of the parameters are required, whatever params are not passed will be set to NULL.  
-param: {String sessionId, String location, String greeting, String linkedIn, String github, String tags[]}  
+param: {*String sessionId, String location, String greeting, String linkedIn, String github, String tags[]}  
 response: {String error}  
 
 ### POST '/user/onboard/education'  
 This is the second half of the user creation process.  If a user has multiple educations, this call should be made multiple times.  
-param: {String sessionId, *String college, *String start, String end, bool present (True = present, False = ended), *String major, String minor, double gpa, String tags[]}  
+param: {*String sessionId, *String college, *String start, String end, bool present (True = present, False = ended), *String major, String minor, double gpa, String tags[]}  
 response: {String error}  
 
 ### POST '/user/onboard/experience'  
 This is the second half of the user creation process.  If a user has multiple experiences, this call should be made multiple times.  
-param: {String sessionId, *String name, *String start, String end, bool present, bool project, String title, *String description, String tags[]}  
+param: {*String sessionId, *String name, *String start, String end, bool present, bool project, String title, String description, String tags[]}  
 response: {String error}  
   
 ### GET '/user/reset'  
@@ -156,21 +156,23 @@ response: {String msg, String error}
   
 ### PUT '/user/update/info'  
 This call will update the users info (everything besides experiences and education)
-param: {String sessionId, String firstName, String lastName, String email, String location, String greeting}  
+param: {*String sessionId, String firstName, String lastName, String email, String location, String greeting}  
 response: {String error} 
   
 ### PUT '/user/update/education'  
-This call will update the user education
-param: {String sessionId, *String college, *String start, String end, bool present (True = present, False = ended), *String major, String minor, double gpa, String tags[]}  
+This call will update the user's educations, It is important to note... A user cannot change the name/startDate of a current education connected to their profile... If they want to change these values they will need to delete the current education and create a new one.  I still need you to pass the current name/startDate so I can make sure I am editing the correct education.
+param: {*String sessionId, *String college, *String start, String end, bool present (True = present, False = ended), *String major, String minor, double gpa, String tags[]}  
 response: {String error} 
   
 ### PUT '/user/update/experience'  
-param: {String sessionId, *String name, *String start, String end, bool present, bool project, String title, *String description, String tags[]}  
+This call will update the user's experiences, It is important to note... A user cannot change the name/startDate of a current experience connected to their profile... If they want to change these values they will need to delete the current experience and create a new one.  I still need you to pass the current name/startDate so I can make sure I am editing the correct experience.
+param: {*String sessionId, *String name, *String start, String end, bool present, bool project, String title, String description, String tags[]}  
 response: {String error} 
   
 ### PUT '/user/update/listings'  
-param: {String email, String password, bool type (True = Applicant, False = Employer)}  
-response: {String sessionId, String error} 
+This call will update a listing connected to a users, It is important to note... A user cannot change the name/title of a current listing connected to their user... If they want to change these values they will need to delete the current listing and create a new one.  I still need you to pass the current name/title so I can make sure I am editing the correct listing.  
+param: {*String sessionId, *String name, String start, String location, String type, bool paid, *String title, String description, String tags[]}  
+response: {String error} 
 
 ## LISTINGS  
 
