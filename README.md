@@ -128,6 +128,11 @@ This call will return all of the profile information for the currently logged in
 param: {*String sessionId}  
 response: {String firstName, String lastName, String email, String location, String greeting, Experience[] experiences, Education[] educations, Listing[] listings}
 
+### GET '/user/login'  
+This call will login a user.  If the user is logged in correctly, it will return the sessionId, if the email/password are incorrect it will return an error.  
+param: {*String email, *String password}  
+response: {String sessionId, String error}  
+   
 ### POST '/user/create'  
 This call will create a new user.  All of the params are required and if one is missing it will return an error.  Please collect and send all of the information before making the call.  
 param: {*String firstName, *String lastName, *String email, *String password, *bool type (true = Applicant, false = Employer)}  
