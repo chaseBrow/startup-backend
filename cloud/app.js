@@ -4,6 +4,19 @@ app.get("/test", (req, res) => {
     res.json({params: req.query});
 });
 
+app.delete('/user', async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+
+    user.destroy().then(() => {
+        res.json({message: "The user " + req.query.sessionId + " has been deleted."});
+    }).catch((err) => {
+        res.json({error: "Error: " + err.code + " " + err.message});
+    });
+});
+
+
 app.get("/user", async (req, res) => {
     const query = new Parse.Query(Parse.User);
     query.equalTo("objectId", req.query.sessionId);
@@ -17,7 +30,64 @@ app.get("/user", async (req, res) => {
     delete temp.createdAt;
     temp.tags = JSON.parse(temp.tags);
 
-    res.json({user: temp});
+    const Exp = Parse.Object.extend("Experience");
+    const Edu = Parse.Object.extend("Education");
+
+    const queryExp = new Parse.Query(Exp);
+    queryExp.equalTo("owner", user);
+    const queryEdu = new Parse.Query(Edu);
+    queryEdu.equalTo("owner", user);
+
+    let exp = await queryExp.find();
+    let edu = await queryEdu.find();
+
+    let exps = JSON.parse(JSON.stringify(exp));
+    exps.forEach((item) => {
+        if(item.start) {
+            let date = item.start.iso.split("T");
+            delete item.start;
+            item.start = date[0];
+        }
+        if(item.end) {
+            let date = item.end.iso.split("T");
+            delete item.end;
+            item.end = date[0];
+        }
+        let parent = item.owner.objectId;
+        delete item.owner;
+        item.owner = parent;
+        if(item.tags) {
+            item.tags = JSON.parse(item.tags);
+        }
+        delete item.createdAt;
+        delete item.updatedAt;
+        delete item.objectId;
+    });
+
+    edus = JSON.parse(JSON.stringify(edu));
+    edus.forEach((item) => {
+        if(item.start) {
+            let date = item.start.iso.split("T");
+            delete item.start;
+            item.start = date[0];
+        }
+        if(item.end) {
+            let date = item.end.iso.split("T");
+            delete item.end;
+            item.end = date[0];
+        }
+        let parent = item.owner.objectId;
+        delete item.owner;
+        item.owner = parent;
+        if(item.tags) {
+            item.tags = JSON.parse(item.tags);
+        }
+        delete item.createdAt;
+        delete item.updatedAt;
+        delete item.objectId;
+    });
+
+    res.json({user: temp, education: edus, experience: exps});
 });
 
 app.get("/user/login", async (req, res) => {
