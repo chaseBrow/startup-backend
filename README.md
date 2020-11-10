@@ -188,7 +188,7 @@ response: {Listing[] listings, String error}
   
 ### POST '/listings/create'  
 This call will create a new listing connected to the users account.  
-param: {*String sessionId, *String name, *String start, String location, String type, bool paid, String title, String description, String tags[]}  
+param: {*String sessionId, *String name, *String start, String location, String type, bool paid, *String title, String description, String tags[]}  
 response: {String error}   
   
 ### PUT '/listings/update'  

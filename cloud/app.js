@@ -4,13 +4,66 @@ app.get("/test", (req, res) => {
     res.json({params: req.query});
 });
 
-app.delete('/user', async (req, res) => {
+app.delete('/user/experience', async (req, res) => {
     const query = new Parse.Query(Parse.User);
     query.equalTo("objectId", req.query.sessionId);
     let user = await query.first({useMasterKey: true});
 
-    user.destroy().then(() => {
-        res.json({message: "The user " + req.query.sessionId + " has been deleted."});
+    const Exp = Parse.Object.extend("Experience");
+    const queryExp = new Parse.Query(Exp);
+    queryExp.equalTo("owner", user);
+    let temp = new Date(req.query.start);
+    queryExp.equalTo("start", temp);
+    queryExp.equalTo("name", req.query.name);
+
+    let exp = await queryExp.first();
+
+    exp.destroy().then(() => {
+        res.json({msg: "The experience " + req.query.name + " has been deleted."});
+    }).catch((err) => {
+        res.json({error: "Error: " + err.code + " " + err.message});
+    });
+});
+
+app.delete('/user/education', async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+
+    const Edu = Parse.Object.extend("Education");
+    const queryEdu = new Parse.Query(Exp);
+    queryEdu.equalTo("owner", user);
+    let temp = new Date(req.query.start);
+    queryEdu.equalTo("start", temp);
+    queryEdu.equalTo("name", req.query.college);
+    queryEdu.equalTo("major", req.query.major);
+
+    let edu = await queryEdu.first();
+
+    edu.destroy().then(() => {
+        res.json({message: "The education at" + req.query.college + " of major " + req.query.major + " has been deleted."});
+    }).catch((err) => {
+        res.json({error: "Error: " + err.code + " " + err.message});
+    });
+});
+
+app.delete('/user/education', async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+
+    const Edu = Parse.Object.extend("Education");
+    const queryEdu = new Parse.Query(Exp);
+    queryEdu.equalTo("owner", user);
+    let temp = new Date(req.query.start);
+    queryEdu.equalTo("start", temp);
+    queryEdu.equalTo("name", req.query.college);
+    queryEdu.equalTo("major", req.query.major);
+
+    let edu = await queryEdu.first();
+
+    edu.destroy().then(() => {
+        res.json({message: "The education at" + req.query.college + " of major " + req.query.major + " has been deleted."});
     }).catch((err) => {
         res.json({error: "Error: " + err.code + " " + err.message});
     });
