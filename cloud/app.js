@@ -20,6 +20,14 @@ app.get("/user", async (req, res) => {
     res.json({user: temp});
 });
 
+app.get("/user/login", async (req, res) => {
+    Parse.User.logIn(req.query.email, req.query.password).then((user) => {
+        res.json({sessionId: user.id});
+    }).catch((err) => {
+        res.json({error: "Error: " + err.code + " " + err.message});
+    });
+});
+
 app.post("/user/create", async (req, res) => {
     if (!req.query.email || !req.query.password) {
         res.json({ sessionId: null, error: "Please provide an email and password"});
