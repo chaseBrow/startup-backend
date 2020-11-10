@@ -31,39 +31,39 @@ app.delete('/user/education', async (req, res) => {
     let user = await query.first({useMasterKey: true});
 
     const Edu = Parse.Object.extend("Education");
-    const queryEdu = new Parse.Query(Exp);
+    const queryEdu = new Parse.Query(Edu);
     queryEdu.equalTo("owner", user);
     let temp = new Date(req.query.start);
     queryEdu.equalTo("start", temp);
-    queryEdu.equalTo("name", req.query.college);
+    queryEdu.equalTo("college", req.query.college);
     queryEdu.equalTo("major", req.query.major);
 
     let edu = await queryEdu.first();
 
     edu.destroy().then(() => {
-        res.json({message: "The education at" + req.query.college + " of major " + req.query.major + " has been deleted."});
+        res.json({message: "The education at " + req.query.college + " of major " + req.query.major + " has been deleted."});
     }).catch((err) => {
         res.json({error: "Error: " + err.code + " " + err.message});
     });
 });
 
-app.delete('/user/education', async (req, res) => {
+app.delete('/user/listing', async (req, res) => {
     const query = new Parse.Query(Parse.User);
     query.equalTo("objectId", req.query.sessionId);
     let user = await query.first({useMasterKey: true});
 
-    const Edu = Parse.Object.extend("Education");
-    const queryEdu = new Parse.Query(Exp);
-    queryEdu.equalTo("owner", user);
+    const List = Parse.Object.extend("Listing");
+    const queryList = new Parse.Query(List);
+    queryList.equalTo("owner", user);
     let temp = new Date(req.query.start);
-    queryEdu.equalTo("start", temp);
-    queryEdu.equalTo("name", req.query.college);
-    queryEdu.equalTo("major", req.query.major);
+    queryList.equalTo("start", temp);
+    queryList.equalTo("name", req.query.name);
+    queryList.equalTo("title", req.query.title);
 
-    let edu = await queryEdu.first();
+    let list = await queryList.first();
 
-    edu.destroy().then(() => {
-        res.json({message: "The education at" + req.query.college + " of major " + req.query.major + " has been deleted."});
+    list.destroy().then(() => {
+        res.json({message: "The listing at " + req.query.name + " of position " + req.query.title + " has been deleted."});
     }).catch((err) => {
         res.json({error: "Error: " + err.code + " " + err.message});
     });
