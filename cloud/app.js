@@ -4,6 +4,22 @@ app.get("/test", (req, res) => {
     res.json({params: req.query});
 });
 
+app.get("/user", async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+    let temp = JSON.parse(JSON.stringify(user));
+    delete temp.ACL;
+    delete temp.username;
+    delete temp._email_verify_token;
+    delete temp.emailVerified;
+    delete temp.updatedAt;
+    delete temp.createdAt;
+    temp.tags = JSON.parse(temp.tags);
+
+    res.json({user: temp});
+});
+
 app.post("/user/create", async (req, res) => {
     if (!req.query.email || !req.query.password) {
         res.json({ sessionId: null, error: "Please provide an email and password"});
@@ -259,7 +275,22 @@ app.get("/listings", async (req, res) => {
     }
 
     let list = await queryList.find();
-    res.json({listings: list});
+
+    let temp = JSON.parse(JSON.stringify(list));
+    temp.forEach((item) => {
+        // let date = item.start;
+
+        console.log("test");
+        // console.log(item);
+        let ttag = item.tags;
+        console.log(JSON.parse(ttag));
+        item.tags = ttag;
+        delete item.createdAt;
+        delete item.updatedAt;
+        delete item.objectId;
+    });
+    
+    res.json({listings: temp});
 });
 
 app.post("/listings/create", async (req, res) => {
