@@ -278,13 +278,17 @@ app.get("/listings", async (req, res) => {
 
     let temp = JSON.parse(JSON.stringify(list));
     temp.forEach((item) => {
-        // let date = item.start;
-
-        console.log("test");
-        // console.log(item);
-        let ttag = item.tags;
-        console.log(JSON.parse(ttag));
-        item.tags = ttag;
+        if(item.start) {
+            let date = item.start.iso.split("T");
+            delete item.start;
+            item.start = date[0];
+        }
+        let parent = item.owner.objectId;
+        delete item.owner;
+        item.owner = parent;
+        if(item.tags) {
+            item.tags = JSON.parse(item.tags);
+        }
         delete item.createdAt;
         delete item.updatedAt;
         delete item.objectId;
