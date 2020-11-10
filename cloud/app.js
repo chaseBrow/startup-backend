@@ -239,7 +239,6 @@ app.put("/user/update/experience", async (req, res) => {
 app.get("/listings", async (req, res) => {
     const List = Parse.Object.extend("Listing");
     const queryList = new Parse.Query(List);
-    console.log("test1");
     if(req.query.name) {
         queryList.startsWith("name", req.query.name);
     }
@@ -258,7 +257,6 @@ app.get("/listings", async (req, res) => {
     else if(req.query.sortBy == "Oldest") {
         queryList.ascending("start");
     }
-    console.log("test2");
 
     let list = await queryList.find();
     res.json({listings: list});
