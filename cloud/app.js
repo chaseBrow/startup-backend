@@ -4,6 +4,153 @@ app.get("/test", (req, res) => {
     res.json({params: req.query});
 });
 
+app.delete('/user/experience', async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+
+    const Exp = Parse.Object.extend("Experience");
+    const queryExp = new Parse.Query(Exp);
+    queryExp.equalTo("owner", user);
+    let temp = new Date(req.query.start);
+    queryExp.equalTo("start", temp);
+    queryExp.equalTo("name", req.query.name);
+
+    let exp = await queryExp.first();
+
+    exp.destroy().then(() => {
+        res.json({msg: "The experience " + req.query.name + " has been deleted."});
+    }).catch((err) => {
+        res.json({error: "Error: " + err.code + " " + err.message});
+    });
+});
+
+app.delete('/user/education', async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+
+    const Edu = Parse.Object.extend("Education");
+    const queryEdu = new Parse.Query(Edu);
+    queryEdu.equalTo("owner", user);
+    let temp = new Date(req.query.start);
+    queryEdu.equalTo("start", temp);
+    queryEdu.equalTo("college", req.query.college);
+    queryEdu.equalTo("major", req.query.major);
+
+    let edu = await queryEdu.first();
+
+    edu.destroy().then(() => {
+        res.json({message: "The education at " + req.query.college + " of major " + req.query.major + " has been deleted."});
+    }).catch((err) => {
+        res.json({error: "Error: " + err.code + " " + err.message});
+    });
+});
+
+app.delete('/user/listing', async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+
+    const List = Parse.Object.extend("Listing");
+    const queryList = new Parse.Query(List);
+    queryList.equalTo("owner", user);
+    let temp = new Date(req.query.start);
+    queryList.equalTo("start", temp);
+    queryList.equalTo("name", req.query.name);
+    queryList.equalTo("title", req.query.title);
+
+    let list = await queryList.first();
+
+    list.destroy().then(() => {
+        res.json({message: "The listing at " + req.query.name + " of position " + req.query.title + " has been deleted."});
+    }).catch((err) => {
+        res.json({error: "Error: " + err.code + " " + err.message});
+    });
+});
+
+
+app.get("/user", async (req, res) => {
+    const query = new Parse.Query(Parse.User);
+    query.equalTo("objectId", req.query.sessionId);
+    let user = await query.first({useMasterKey: true});
+    let temp = JSON.parse(JSON.stringify(user));
+    delete temp.ACL;
+    delete temp.username;
+    delete temp._email_verify_token;
+    delete temp.emailVerified;
+    delete temp.updatedAt;
+    delete temp.createdAt;
+    temp.tags = JSON.parse(temp.tags);
+
+    const Exp = Parse.Object.extend("Experience");
+    const Edu = Parse.Object.extend("Education");
+
+    const queryExp = new Parse.Query(Exp);
+    queryExp.equalTo("owner", user);
+    const queryEdu = new Parse.Query(Edu);
+    queryEdu.equalTo("owner", user);
+
+    let exp = await queryExp.find();
+    let edu = await queryEdu.find();
+
+    let exps = JSON.parse(JSON.stringify(exp));
+    exps.forEach((item) => {
+        if(item.start) {
+            let date = item.start.iso.split("T");
+            delete item.start;
+            item.start = date[0];
+        }
+        if(item.end) {
+            let date = item.end.iso.split("T");
+            delete item.end;
+            item.end = date[0];
+        }
+        let parent = item.owner.objectId;
+        delete item.owner;
+        item.owner = parent;
+        if(item.tags) {
+            item.tags = JSON.parse(item.tags);
+        }
+        delete item.createdAt;
+        delete item.updatedAt;
+        delete item.objectId;
+    });
+
+    edus = JSON.parse(JSON.stringify(edu));
+    edus.forEach((item) => {
+        if(item.start) {
+            let date = item.start.iso.split("T");
+            delete item.start;
+            item.start = date[0];
+        }
+        if(item.end) {
+            let date = item.end.iso.split("T");
+            delete item.end;
+            item.end = date[0];
+        }
+        let parent = item.owner.objectId;
+        delete item.owner;
+        item.owner = parent;
+        if(item.tags) {
+            item.tags = JSON.parse(item.tags);
+        }
+        delete item.createdAt;
+        delete item.updatedAt;
+        delete item.objectId;
+    });
+
+    res.json({user: temp, education: edus, experience: exps});
+});
+
+app.get("/user/login", async (req, res) => {
+    Parse.User.logIn(req.query.email, req.query.password).then((user) => {
+        res.json({sessionId: user.id});
+    }).catch((err) => {
+        res.json({error: "Error: " + err.code + " " + err.message});
+    });
+});
+
 app.post("/user/create", async (req, res) => {
     if (!req.query.email || !req.query.password) {
         res.json({ sessionId: null, error: "Please provide an email and password"});
@@ -259,7 +406,26 @@ app.get("/listings", async (req, res) => {
     }
 
     let list = await queryList.find();
-    res.json({listings: list});
+
+    let temp = JSON.parse(JSON.stringify(list));
+    temp.forEach((item) => {
+        if(item.start) {
+            let date = item.start.iso.split("T");
+            delete item.start;
+            item.start = date[0];
+        }
+        let parent = item.owner.objectId;
+        delete item.owner;
+        item.owner = parent;
+        if(item.tags) {
+            item.tags = JSON.parse(item.tags);
+        }
+        delete item.createdAt;
+        delete item.updatedAt;
+        delete item.objectId;
+    });
+    
+    res.json({listings: temp});
 });
 
 app.post("/listings/create", async (req, res) => {
